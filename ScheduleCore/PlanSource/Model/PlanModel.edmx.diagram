@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="23c98d6d02554038b62202e01087e0ca" Name="Diagram1" ZoomLevel="82">
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.MO" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.MOItemTask" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.Product" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.ProductFamily" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.ProductRoot" Width="1.5" PointX="6.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.Specification" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.Specification_Venture" Width="1.5" PointX="8.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.Venture" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.Venture_Product" Width="1.5" PointX="10.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.WorkCenterCalendar" Width="1.5" PointX="10.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.WorkflowStepExpandDefault" Width="1.5" PointX="8.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.BOM" Width="1.5" PointX="11.375" PointY="10.75" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.BOMItem" Width="1.5" PointX="13.375" PointY="0.75" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.ProductSpecification" Width="1.5" PointX="3.375" PointY="13.75" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.SpecificationRoot" Width="1.5" PointX="5.375" PointY="13.75" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.BanChengPinMO" Width="1.5" PointX="13.375" PointY="6.75" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.ChanchengPinMO" Width="1.5" PointX="15.375" PointY="0.75" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.SysUser" Width="1.5" PointX="0.75" PointY="15.75" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.Factory" Width="1.5" PointX="7.375" PointY="15.75" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.Shift" Width="1.5" PointX="9.375" PointY="15.75" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.Venture_Shift" Width="1.5" PointX="15.375" PointY="15.75" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.VentureProductFamily" Width="1.5" PointX="17.375" PointY="0.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
