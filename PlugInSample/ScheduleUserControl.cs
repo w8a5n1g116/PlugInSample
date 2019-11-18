@@ -2068,9 +2068,9 @@ namespace SchedulePlugInSample
                 s2.Color = Color.Red;
                 s3.Color = Color.Blue;
 
-                s1.LegendText = "工序能力";
-                s2.LegendText = "下达负荷";
-                s3.LegendText = "排产负荷";
+                s1.LegendText = "能力工时";
+                s2.LegendText = "下达工时";
+                s3.LegendText = "排产工时";
                 s1.IsValueShownAsLabel = true;
                 s2.IsValueShownAsLabel = true;
                 s3.IsValueShownAsLabel = true;

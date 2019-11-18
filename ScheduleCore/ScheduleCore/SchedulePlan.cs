@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Braincase.GanttChart;
 using PlugInSample.Model;
+using System.Threading;
 
 namespace ScheduleCore
 {
@@ -41,7 +42,12 @@ namespace ScheduleCore
         private List<StepModel> stepModelList = new List<StepModel>();
 
         //private List<string> MoIdListLocal = new List<string>();
+        public List<ProductSpecification> psList = new List<ProductSpecification>();
 
+        public void getPSList()
+        {
+            psList = orbitEntity.ProductSpecification.ToList();
+        }
 
         public string FactoryID;
 
@@ -53,7 +59,7 @@ namespace ScheduleCore
         public SchedulePlan(string userId)
         {
             if (string.IsNullOrEmpty(userId))
-                userId = "SUR1000003KU";
+                userId = "SUR1000003KX";
 
             try
             {
@@ -63,6 +69,10 @@ namespace ScheduleCore
             {
                 throw new Exception("用户ID:" + userId+"未分配工厂ID");
             }
+
+            Thread thread = new Thread(getPSList);
+            thread.Start();
+
             GetStepModelList();
         }
 
@@ -558,8 +568,8 @@ namespace ScheduleCore
 
             //specificationList = moitemList.Where(p => p.TaskStatus != "已报工" && p.TaskStatus != "强制关闭").Select(p => p.SpecificationID).Distinct().ToList();
 
-            specificationList = orbitEntity.Specification.Where(p => p.FactoryId == this.FactoryID).Select(p => p.SpecificationId).ToList();
-
+            specificationList = orbitEntity.Specification.Where(p => p.FactoryId == this.FactoryID && p.WorkflowTypeId == "URC100000A7J").Select(p => p.SpecificationId).ToList();
+            //
             return specificationList;
         }
 
@@ -682,7 +692,7 @@ namespace ScheduleCore
         /// <returns></returns>
         int GetStandardWorkingTimeByProductId_SpecificationId(string ProductId,string SpecificationId)
         {
-            ProductSpecification ps = orbitEntity.ProductSpecification.Where(p => p.ProductId == ProductId && p.SpecificationId == SpecificationId).FirstOrDefault();
+            ProductSpecification ps = psList.Where(p => p.ProductId == ProductId && p.SpecificationId == SpecificationId).FirstOrDefault();
 
             if (ps != null && ps.StandardWorkingTime != null)
                 return (int)ps.StandardWorkingTime;
@@ -1309,9 +1319,9 @@ namespace ScheduleCore
             {
                 ReportModel reportModel = new ReportModel("周");
 
-                double moPlnFinish = GetSpecificationCapValue((DateTime)mit.PlannedDateFrom, null, mit.SpecificationID);
+                double moPlnFinish = GetSpecificationCapValue((DateTime)mit.PlannedDateFrom, null, mit.SpecificationID) - GetSpecificationRealValue((DateTime)mit.PlannedDateFrom, mit.PlannedDateTo, mit.SpecificationID);
                 double moRealFinish = GetSpecificationRealValue((DateTime)mit.PlannedDateFrom, mit.PlannedDateTo, mit.SpecificationID);
-                double moRate = GetStandardWorkingTimeByProductId_SpecificationId(mit.ProductId, mit.SpecificationID) + GetSpecificationRealValue((DateTime)mit.PlannedDateFrom, mit.PlannedDateTo, mit.SpecificationID);
+                double moRate = GetStandardWorkingTimeByProductId_SpecificationId(mit.ProductId, mit.SpecificationID);
 
 
                 Specification sp = orbitEntity.Specification.Where(p => p.SpecificationId == mit.SpecificationID).FirstOrDefault();
