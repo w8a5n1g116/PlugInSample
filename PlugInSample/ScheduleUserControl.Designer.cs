@@ -30,9 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScheduleUserControl));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.toolStripMain = new System.Windows.Forms.ToolStrip();
             this.tsbtnNew = new System.Windows.Forms.ToolStripButton();
             this.tsbtnModify = new System.Windows.Forms.ToolStripButton();
@@ -66,11 +69,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.MoGridView = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -79,6 +78,11 @@
             this._mChart = new Braincase.GanttChart.Chart();
             this.MoStepBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.MoBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.toolStripMain.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -94,6 +98,7 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MoStepBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MoBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStripMain
@@ -429,11 +434,12 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.button4);
-            this.tabPage3.Controls.Add(this.button3);
-            this.tabPage3.Controls.Add(this.textBox1);
-            this.tabPage3.Controls.Add(this.label3);
+            this.tabPage3.Controls.Add(this.button2);
             this.tabPage3.Controls.Add(this.button1);
+            this.tabPage3.Controls.Add(this.dateTimePicker2);
+            this.tabPage3.Controls.Add(this.dateTimePicker1);
+            this.tabPage3.Controls.Add(this.chart2);
+            this.tabPage3.Controls.Add(this.label3);
             this.tabPage3.Controls.Add(this.chart1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
@@ -444,36 +450,6 @@
             this.tabPage3.UseVisualStyleBackColor = true;
             this.tabPage3.Click += new System.EventHandler(this.TabPage3_Click);
             // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(651, 95);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 12;
-            this.button4.Text = "确定提交";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.Button4_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(304, 95);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 11;
-            this.button3.Text = "查看负荷";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.Button3_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Font = new System.Drawing.Font("宋体", 12F);
-            this.textBox1.Location = new System.Drawing.Point(97, 17);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(1002, 60);
-            this.textBox1.TabIndex = 10;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -483,28 +459,18 @@
             this.label3.TabIndex = 9;
             this.label3.Text = "计划分布时间";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(498, 451);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "重新排产";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
-            // 
             // chart1
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chart1.Legends.Add(legend2);
-            this.chart1.Location = new System.Drawing.Point(16, 134);
+            chartArea10.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea10);
+            legend10.Name = "Legend1";
+            this.chart1.Legends.Add(legend10);
+            this.chart1.Location = new System.Drawing.Point(16, 46);
             this.chart1.Name = "chart1";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chart1.Series.Add(series2);
+            series10.ChartArea = "ChartArea1";
+            series10.Legend = "Legend1";
+            series10.Name = "Series1";
+            this.chart1.Series.Add(series10);
             this.chart1.Size = new System.Drawing.Size(1083, 311);
             this.chart1.TabIndex = 7;
             this.chart1.Text = "chart1";
@@ -558,6 +524,56 @@
             this._mChart.Size = new System.Drawing.Size(1080, 500);
             this._mChart.TabIndex = 0;
             // 
+            // chart2
+            // 
+            chartArea9.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea9);
+            legend9.Name = "Legend1";
+            this.chart2.Legends.Add(legend9);
+            this.chart2.Location = new System.Drawing.Point(16, 348);
+            this.chart2.Name = "chart2";
+            series9.ChartArea = "ChartArea1";
+            series9.Legend = "Legend1";
+            series9.Name = "Series1";
+            this.chart2.Series.Add(series9);
+            this.chart2.Size = new System.Drawing.Size(1083, 311);
+            this.chart2.TabIndex = 13;
+            this.chart2.Text = "chart2";
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(123, 12);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(200, 21);
+            this.dateTimePicker1.TabIndex = 14;
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Location = new System.Drawing.Point(329, 12);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(200, 21);
+            this.dateTimePicker2.TabIndex = 15;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(548, 11);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "查询";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(693, 11);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 17;
+            this.button2.Text = "提交保存";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.Button4_Click);
+            // 
             // ScheduleUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -588,6 +604,7 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MoStepBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MoBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -635,11 +652,12 @@
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Button FileUploadBtn;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.Button button2;
     }
 }

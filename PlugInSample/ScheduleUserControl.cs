@@ -1575,15 +1575,6 @@ namespace SchedulePlugInSample
             checkBox1.CheckState = CheckState.Checked;
             MessageBox.Show("计算结束");
 
-            if (!string.IsNullOrEmpty(this.mo_id))
-            {
-                textBox1.Text = SchedulePlan.GetProcessListTimeText(this.mo_id);
-            }
-            else
-            {
-                MessageBox.Show("请先排产一种产品！");
-            }
-
             Compute.Enabled = true;
         }
 
@@ -2036,66 +2027,56 @@ namespace SchedulePlugInSample
             }
         }
 
-        private void Button3_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(this.mo_id))
+
+            List<ReportModel> reportModelList = SchedulePlan.GetSpecificationCapReport(this.mo_id);
+
+            ChartArea mainArea = new ChartArea();
+            ChartArea mainArea2 = new ChartArea();
+            mainArea.Axes.FirstOrDefault().IntervalAutoMode = IntervalAutoMode.VariableCount;
+            mainArea.Axes.FirstOrDefault().LabelStyle.IsStaggered = true;
+            mainArea.AxisX.Interval = 1;   //设置X轴坐标的间隔为1
+            mainArea.AxisX.IntervalOffset = 1;  //设置X轴坐标偏移为1
+            chart1.ChartAreas.Clear();
+            chart1.ChartAreas.Add(mainArea);
+
+            Series s1 = new Series();
+            Series s2 = new Series();
+            Series s3 = new Series();
+
+
+
+            foreach (var reportModel in reportModelList)
             {
-                List<ReportModel> reportModelList = SchedulePlan.GetSpecificationCapReport(this.mo_id);
-
-                ChartArea mainArea = new ChartArea();
-                ChartArea mainArea2 = new ChartArea();
-                mainArea.Axes.FirstOrDefault().IntervalAutoMode = IntervalAutoMode.VariableCount;
-                mainArea.Axes.FirstOrDefault().LabelStyle.IsStaggered = true;
-                mainArea.AxisX.Interval = 1;   //设置X轴坐标的间隔为1
-                mainArea.AxisX.IntervalOffset = 1;  //设置X轴坐标偏移为1
-                chart1.ChartAreas.Clear();
-                chart1.ChartAreas.Add(mainArea);
-
-                Series s1 = new Series();
-                Series s2 = new Series();
-                Series s3 = new Series();
-
-
-
-                foreach (var reportModel in reportModelList)
-                {
-                    s1.Points.AddXY(reportModel.Name, reportModel.Plan);
-                    s2.Points.AddXY(reportModel.Name, reportModel.Real);
-                    s3.Points.AddXY(reportModel.Name, reportModel.Rate);
-                }
-
-                s1.Color = Color.Green;
-                s2.Color = Color.Red;
-                s3.Color = Color.Blue;
-
-                s1.LegendText = "能力工时";
-                s2.LegendText = "下达工时";
-                s3.LegendText = "排产工时";
-                s1.IsValueShownAsLabel = true;
-                s2.IsValueShownAsLabel = true;
-                s3.IsValueShownAsLabel = true;
-
-                chart1.Series.Clear();
-
-                chart1.Series.Add(s1);
-                chart1.Series.Add(s2);
-                chart1.Series.Add(s3);
+                s1.Points.AddXY(reportModel.Name, reportModel.Plan);
+                s2.Points.AddXY(reportModel.Name, reportModel.Real);
+                s3.Points.AddXY(reportModel.Name, reportModel.Rate);
             }
-            else
-            {
-                MessageBox.Show("请先排产一种产品！");
-            }
+
+            s1.Color = Color.Green;
+            s2.Color = Color.Red;
+            s3.Color = Color.Blue;
+
+            s1.LegendText = "能力工时";
+            s2.LegendText = "下达工时";
+            s3.LegendText = "排产工时";
+            s1.IsValueShownAsLabel = true;
+            s2.IsValueShownAsLabel = true;
+            s3.IsValueShownAsLabel = true;
+
+            chart1.Series.Clear();
+
+            chart1.Series.Add(s1);
+            chart1.Series.Add(s2);
+            chart1.Series.Add(s3);
+
             
         }
 
         private void Button4_Click(object sender, EventArgs e)
         {
             SaveBtn_Click(sender, e);
-        }
-
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("请到排产界面重新排产！");
         }
 
         private void TabPage3_Click(object sender, EventArgs e)
