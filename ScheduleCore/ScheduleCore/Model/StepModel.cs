@@ -22,7 +22,7 @@ namespace ScheduleCore.Model
         /// <param name="step"></param>
         /// <param name="standardWorkingTime">标准工时</param>
         /// <param name="lastTime">最后时间，如果不为null，放置在List中的位置必须在此时间之后</param>
-        public DateTime? AddStep(MOItemTask step,int standardWorkingTime,DateTime? lastTime,bool isFirstStep,bool isFuji)
+        public DateTime? AddStep(MOItemTask step,double standardWorkingTime,DateTime? lastTime,bool isFirstStep,bool isFuji)
         {
             DateTime? EndTime = null;
 

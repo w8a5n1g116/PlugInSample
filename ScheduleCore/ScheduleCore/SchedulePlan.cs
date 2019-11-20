@@ -442,7 +442,7 @@ namespace ScheduleCore
                     continue;
 
                 //获取产品工序标准工时
-                int standardWorkingTime = GetStandardWorkingTimeByProductId_SpecificationId(step.ProductId, step.SpecificationID);
+                double standardWorkingTime = GetStandardWorkingTimeByProductId_SpecificationId(step.ProductId, step.SpecificationID);
 
                 StepModel stepModel = stepModelList.Where(p => p.SpecificationId == wfsed.SpecificationId).FirstOrDefault();
 
@@ -690,12 +690,12 @@ namespace ScheduleCore
         /// <param name="ProductId"></param>
         /// <param name="SpecificationId"></param>
         /// <returns></returns>
-        int GetStandardWorkingTimeByProductId_SpecificationId(string ProductId,string SpecificationId)
+        double GetStandardWorkingTimeByProductId_SpecificationId(string ProductId,string SpecificationId)
         {
             ProductSpecification ps = psList.Where(p => p.ProductId == ProductId && p.SpecificationId == SpecificationId).FirstOrDefault();
 
             if (ps != null && ps.StandardWorkingTime != null)
-                return (int)ps.StandardWorkingTime;
+                return (double)ps.StandardWorkingTime;
             else
                 return 0;
         }
@@ -1308,29 +1308,94 @@ namespace ScheduleCore
             return text;
         }
 
-        public List<ReportModel> GetSpecificationCapReport(string moid)
+        public List<ReportModel> GetSpecificationCapReport(List<string> MoidList,DateTime starttime,DateTime endtime)
         {
-            List<MOItemTask> mitList = GetStepByMoId(moid);
+
+            List<MOItemTask> mitList = new List<MOItemTask>();
+
+            foreach(var moid in MoidList)
+            {
+                mitList.AddRange(GetStepByMoId(moid));
+            }
+
+            List<string> specificationList = mitList.Select(p => p.SpecificationID).Distinct().ToList();
 
             List<ReportModel> reportModelList = new List<ReportModel>();
 
 
-            foreach (var mit in mitList)
+            foreach (var specification in specificationList)
             {
                 ReportModel reportModel = new ReportModel("周");
 
-                double moPlnFinish = GetSpecificationCapValue((DateTime)mit.PlannedDateFrom, null, mit.SpecificationID) - GetSpecificationRealValue((DateTime)mit.PlannedDateFrom, mit.PlannedDateTo, mit.SpecificationID);
-                double moRealFinish = GetSpecificationRealValue((DateTime)mit.PlannedDateFrom, mit.PlannedDateTo, mit.SpecificationID);
-                double moRate = GetStandardWorkingTimeByProductId_SpecificationId(mit.ProductId, mit.SpecificationID);
+                double moPlnFinish = GetSpecificationCapValue(starttime, endtime, specification); //- GetSpecificationRealValue((DateTime)mit.PlannedDateFrom, mit.PlannedDateTo, mit.SpecificationID);
+                double moRealFinish = GetSpecificationRealValue(starttime, endtime, specification);
+                double moRate = 0;
+
+                List<MOItemTask> list = mitList.Where(p => p.SpecificationID == specification).ToList();
+
+                foreach(var mit in list)
+                {
+                    moRate += GetStandardWorkingTimeByProductId_SpecificationId(mit.ProductId, specification);
+                }
 
 
-                Specification sp = orbitEntity.Specification.Where(p => p.SpecificationId == mit.SpecificationID).FirstOrDefault();
+                Specification sp = orbitEntity.Specification.Where(p => p.SpecificationId == specification).FirstOrDefault();
                 SpecificationRoot sprt2 = orbitEntity.SpecificationRoot.Where(p => p.SpecificationRootId == sp.SpecificationRootId).FirstOrDefault();
 
                 if (sprt2.SpecificationName.Length >= 4)
                     reportModel.Name = sprt2.SpecificationName.Substring(0, 4);
                 else
                     reportModel.Name = sprt2.SpecificationName;
+                reportModel.Plan = moPlnFinish;
+                reportModel.Real = moRealFinish;
+                reportModel.Rate = moRate;
+
+                reportModelList.Add(reportModel);
+            }
+
+            return reportModelList;
+        }
+
+        public List<ReportModel> GetSpecificationCapReportDay(List<string> MoidList, DateTime starttime, DateTime endtime,string specificationName)
+        {
+
+            List<MOItemTask> stepList = new List<MOItemTask>();
+
+            foreach (var stepModel in stepModelList)
+            {
+                foreach (var ventureModel in stepModel.VentureModelList)
+                {
+                    stepList.AddRange(ventureModel.StepList);
+                }
+            }
+
+
+            SpecificationRoot sprt2 = orbitEntity.SpecificationRoot.Where(p => p.SpecificationName.Contains(specificationName)).FirstOrDefault();
+            Specification sp = orbitEntity.Specification.Where(p => p.SpecificationRootId == sprt2.SpecificationRootId).FirstOrDefault();
+
+
+            TimeSpan span = endtime - starttime;
+
+            List<ReportModel> reportModelList = new List<ReportModel>();
+
+
+            for (int i =0; i<=span.Days;i++)
+            {
+                DateTime start = starttime.AddDays(0);
+                ReportModel reportModel = new ReportModel("天");
+
+                double moPlnFinish = GetSpecificationCapValue(start.AddDays(i), start.AddDays(i).AddDays(1), sp.SpecificationId); //- GetSpecificationRealValue((DateTime)mit.PlannedDateFrom, mit.PlannedDateTo, mit.SpecificationID);
+                double moRealFinish = GetSpecificationRealValue(start.AddDays(i), start.AddDays(i).AddDays(1), sp.SpecificationId);
+                double moRate = 0;
+
+                List<MOItemTask> list = stepList.Where(p => p.SpecificationID == sp.SpecificationId && p.PlannedDateFrom >= start.AddDays(i) && p.PlannedDateTo <= start.AddDays(i).AddDays(1) && p.TaskStatus == "被排产").ToList();
+
+                foreach (var mit in list)
+                {
+                    moRate += GetStandardWorkingTimeByProductId_SpecificationId(mit.ProductId, sp.SpecificationId);
+                }
+
+                reportModel.Name = start.AddDays(i).ToString("MM/dd");
                 reportModel.Plan = moPlnFinish;
                 reportModel.Real = moRealFinish;
                 reportModel.Rate = moRate;

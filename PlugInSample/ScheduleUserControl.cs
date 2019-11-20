@@ -62,8 +62,6 @@ namespace SchedulePlugInSample
         public int MoItemGridPageNumber = 0;
         public int MoGridPageNumber = 0;
 
-        public string mo_id;
-
         /// <summary>
         /// MOList缓存
         /// </summary>
@@ -1058,9 +1056,12 @@ namespace SchedulePlugInSample
             listBox1.DataSource = venturelist;
             listBox1.DisplayMember = "VentureName";
 
-            InitGanttChart();
+            //InitGanttChart();
 
-            
+            dateTimePicker1.Value = DateTime.Now;
+            dateTimePicker2.Value = DateTime.Now.AddDays(7);
+
+
         }
 
         /// <summary>
@@ -1273,8 +1274,7 @@ namespace SchedulePlugInSample
                     var dataSelect = MoGridView.SelectedRows;
                     foreach (DataGridViewRow row in dataSelect)
                     {
-                        MoIdList.Add((string)row.Cells[0].Value);
-                        this.mo_id = (string)row.Cells[0].Value;
+                        MoIdList.Add((string)row.Cells[0].Value);                       
                     }
 
                     MoIdListLocal = MoIdList;
@@ -2029,8 +2029,11 @@ namespace SchedulePlugInSample
 
         private void Button1_Click(object sender, EventArgs e)
         {
+            DateTime start = dateTimePicker1.Value;
+            DateTime end = dateTimePicker2.Value;
 
-            List<ReportModel> reportModelList = SchedulePlan.GetSpecificationCapReport(this.mo_id);
+
+            List<ReportModel> reportModelList = SchedulePlan.GetSpecificationCapReport(MoIdListLocal, start,end);
 
             ChartArea mainArea = new ChartArea();
             ChartArea mainArea2 = new ChartArea();
@@ -2085,7 +2088,66 @@ namespace SchedulePlugInSample
             
         }
 
+        private void Chart1_Click(object sender, EventArgs e)
+        {
+            
+            HitTestResult Result = new HitTestResult();
+            Result = chart1.HitTest(((MouseEventArgs)e).X, ((MouseEventArgs)e).Y);
+            if (Result.Series != null)
+            {
+                //MessageBox.Show("'X轴:'" + Result.Series.Points[Result.PointIndex].XValue.ToString() + "'Y轴:'" + Result.Series.Points[Result.PointIndex].YValues[0].ToString());
+                string specificationName = Result.Series.Points[Result.PointIndex].AxisLabel;
 
+                DateTime start = dateTimePicker1.Value;
+                DateTime end = dateTimePicker2.Value;
+
+
+                List<ReportModel> reportModelList = SchedulePlan.GetSpecificationCapReportDay(MoIdListLocal, start, end, specificationName);
+
+                ChartArea mainArea = new ChartArea();
+                mainArea.Axes.FirstOrDefault().IntervalAutoMode = IntervalAutoMode.VariableCount;
+                mainArea.Axes.FirstOrDefault().LabelStyle.IsStaggered = true;
+                mainArea.AxisX.Interval = 1;   //设置X轴坐标的间隔为1
+                mainArea.AxisX.IntervalOffset = 1;  //设置X轴坐标偏移为1
+                chart2.ChartAreas.Clear();
+                chart2.ChartAreas.Add(mainArea);
+
+                Series s1 = new Series();
+                Series s2 = new Series();
+                Series s3 = new Series();
+
+
+
+                foreach (var reportModel in reportModelList)
+                {
+                    s1.Points.AddXY(reportModel.Name, reportModel.Plan);
+                    s2.Points.AddXY(reportModel.Name, reportModel.Real);
+                    s3.Points.AddXY(reportModel.Name, reportModel.Rate);
+                }
+
+                s1.Color = Color.Green;
+                s2.Color = Color.Red;
+                s3.Color = Color.Blue;
+
+                s1.LegendText = "能力工时";
+                s2.LegendText = "下达工时";
+                s3.LegendText = "排产工时";
+                s1.IsValueShownAsLabel = true;
+                s2.IsValueShownAsLabel = true;
+                s3.IsValueShownAsLabel = true;
+
+                chart2.Series.Clear();
+
+                chart2.Series.Add(s1);
+                chart2.Series.Add(s2);
+                chart2.Series.Add(s3);
+
+                chart2.Titles.Add(specificationName);
+
+            }
+
+                
+        }
     }
 
 
