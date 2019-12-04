@@ -490,13 +490,13 @@
             this.chart2.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chart2.Legends.Add(legend1);
-            this.chart2.Location = new System.Drawing.Point(16, 348);
+            this.chart2.Location = new System.Drawing.Point(16, 281);
             this.chart2.Name = "chart2";
             series1.ChartArea = "ChartArea1";
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chart2.Series.Add(series1);
-            this.chart2.Size = new System.Drawing.Size(1083, 311);
+            this.chart2.Size = new System.Drawing.Size(1083, 228);
             this.chart2.TabIndex = 13;
             this.chart2.Text = "chart2";
             // 
@@ -521,7 +521,7 @@
             series2.Legend = "Legend1";
             series2.Name = "Series1";
             this.chart1.Series.Add(series2);
-            this.chart1.Size = new System.Drawing.Size(1083, 311);
+            this.chart1.Size = new System.Drawing.Size(1083, 229);
             this.chart1.TabIndex = 7;
             this.chart1.Text = "chart1";
             this.chart1.Click += new System.EventHandler(this.Chart1_Click);

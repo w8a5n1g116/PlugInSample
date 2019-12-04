@@ -2047,6 +2047,7 @@ namespace SchedulePlugInSample
             Series s1 = new Series();
             Series s2 = new Series();
             Series s3 = new Series();
+            Series s4 = new Series();
 
 
 
@@ -2055,26 +2056,31 @@ namespace SchedulePlugInSample
                 s1.Points.AddXY(reportModel.Name, reportModel.Plan);
                 s2.Points.AddXY(reportModel.Name, reportModel.Real);
                 s3.Points.AddXY(reportModel.Name, reportModel.Rate);
+                s4.Points.AddXY(reportModel.Name, reportModel.Plan - reportModel.Real - reportModel.Rate);
             }
 
             s1.Color = Color.Green;
             s2.Color = Color.Red;
             s3.Color = Color.Blue;
+            s4.Color = Color.Yellow;
 
             s1.LegendText = "能力工时";
             s2.LegendText = "下达工时";
             s3.LegendText = "排产工时";
+            s4.LegendText = "剩余能力";
             s1.IsValueShownAsLabel = true;
             s2.IsValueShownAsLabel = true;
             s3.IsValueShownAsLabel = true;
+            s4.IsValueShownAsLabel = true;
 
             chart1.Series.Clear();
 
             chart1.Series.Add(s1);
             chart1.Series.Add(s2);
             chart1.Series.Add(s3);
+            chart1.Series.Add(s4);
 
-            
+
         }
 
         private void Button4_Click(object sender, EventArgs e)
@@ -2101,6 +2107,8 @@ namespace SchedulePlugInSample
                 DateTime start = dateTimePicker1.Value;
                 DateTime end = dateTimePicker2.Value;
 
+                
+
 
                 List<ReportModel> reportModelList = SchedulePlan.GetSpecificationCapReportDay(MoIdListLocal, start, end, specificationName);
 
@@ -2115,6 +2123,7 @@ namespace SchedulePlugInSample
                 Series s1 = new Series();
                 Series s2 = new Series();
                 Series s3 = new Series();
+                Series s4 = new Series();
 
 
 
@@ -2123,25 +2132,31 @@ namespace SchedulePlugInSample
                     s1.Points.AddXY(reportModel.Name, reportModel.Plan);
                     s2.Points.AddXY(reportModel.Name, reportModel.Real);
                     s3.Points.AddXY(reportModel.Name, reportModel.Rate);
+                    s4.Points.AddXY(reportModel.Name, reportModel.Plan - reportModel.Real - reportModel.Rate);
                 }
 
                 s1.Color = Color.Green;
                 s2.Color = Color.Red;
                 s3.Color = Color.Blue;
+                s4.Color = Color.Yellow;
 
                 s1.LegendText = "能力工时";
                 s2.LegendText = "下达工时";
                 s3.LegendText = "排产工时";
+                s4.LegendText = "剩余能力";
                 s1.IsValueShownAsLabel = true;
                 s2.IsValueShownAsLabel = true;
                 s3.IsValueShownAsLabel = true;
+                s4.IsValueShownAsLabel = true;
 
                 chart2.Series.Clear();
 
                 chart2.Series.Add(s1);
                 chart2.Series.Add(s2);
                 chart2.Series.Add(s3);
+                chart2.Series.Add(s4);
 
+                chart2.Titles.Clear();
                 chart2.Titles.Add(specificationName);
 
             }

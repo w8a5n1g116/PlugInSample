@@ -1426,10 +1426,15 @@ namespace ScheduleCore
 
         public double GetSpecificationRealValue(DateTime date, DateTime? endDate, string specificationId)
         {
+            date = new DateTime(date.Year, date.Month, date.Day);
+            endDate = new DateTime(endDate.Value.Year, endDate.Value.Month, endDate.Value.Day);
+
             double realvalue = 0;
             List<MOItemTask> moitemList = new List<MOItemTask>();
             if (endDate != null)
             {
+                
+
                 List<MOItemTask> moitemtempList = orbitEntity.MOItemTask.Where(p => p.SpecificationID == specificationId && p.PlannedDateTo >= date && p.PlannedDateTo <= endDate).ToList();
 
                 foreach (var moitem in moitemtempList)
