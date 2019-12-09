@@ -80,15 +80,16 @@
           <Property Name="PlannedDateTo" Type="datetime" />
           <Property Name="ExecuteDateFrom" Type="datetime" />
           <Property Name="ExecuteDateTo" Type="datetime" />
-          <Property Name="MOQtyRequired" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="MOQtyDone" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="MOQtyCurrent" Type="decimal" Precision="19" Scale="2" StoreGeneratedPattern="Computed" />
+          <Property Name="MOQtyRequired" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="MOQtyDone" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="MOQtyCurrent" Type="decimal" Precision="19" Scale="4" StoreGeneratedPattern="Computed" />
           <Property Name="BOMName" Type="nvarchar" MaxLength="50" />
           <Property Name="WorkflowId" Type="char" MaxLength="12" />
           <Property Name="PickStatus" Type="char" MaxLength="2" />
           <Property Name="PriorityLevel" Type="char" MaxLength="5" />
           <Property Name="SOId" Type="char" MaxLength="12" />
           <Property Name="SOName" Type="nvarchar" MaxLength="50" />
+          <Property Name="SOSequence" Type="nvarchar" MaxLength="50" />
           <Property Name="CustomerId" Type="char" MaxLength="12" />
           <Property Name="ParentMOId" Type="char" MaxLength="12" />
           <Property Name="FactoryId" Type="char" MaxLength="12" />
@@ -100,6 +101,7 @@
           <Property Name="ReleaseDate" Type="datetime" />
           <Property Name="StartWorkDate" Type="datetime" />
           <Property Name="CloseDate" Type="datetime" />
+          <Property Name="FinishDate" Type="datetime" />
           <Property Name="DeleteFlag" Type="char" MaxLength="10" />
           <Property Name="ERPDate" Type="varbinary" MaxLength="50" />
           <Property Name="ERPId" Type="nvarchar" MaxLength="50" />
@@ -133,9 +135,14 @@
           <Property Name="SAP_Z0009" Type="nvarchar(max)" />
           <Property Name="SAP_Z010" Type="nvarchar(max)" />
           <Property Name="SAP_VDATU" Type="nvarchar" MaxLength="50" />
-          <Property Name="SAP_CHARG" Type="nvarchar" MaxLength="50" />
+          <Property Name="SAP_CHARG" Type="nvarchar" MaxLength="100" />
           <Property Name="SAP_Remarks" Type="nvarchar" MaxLength="50" />
           <Property Name="SendMaterialDate" Type="datetime" />
+          <Property Name="IfKeyProduct" Type="nvarchar" MaxLength="50" />
+          <Property Name="TuoQiReason" Type="nvarchar" MaxLength="50" />
+          <Property Name="MOStation" Type="nvarchar" MaxLength="50" />
+          <Property Name="ControlNum" Type="bigint" />
+          <Property Name="IsArchived" Type="bit" />
         </EntityType>
         <EntityType Name="MOItemTask">
           <Key>
@@ -159,6 +166,7 @@
           <Property Name="TaskStatus" Type="nvarchar" MaxLength="20" />
           <Property Name="TaskPriorityLevel" Type="char" MaxLength="5" />
           <Property Name="ParentMOItemTaskId" Type="char" MaxLength="12" />
+          <Property Name="PreviousMOItemTaskId" Type="char" MaxLength="12" />
           <Property Name="SendQCReportId" Type="char" MaxLength="12" />
           <Property Name="QCResult" Type="nvarchar" MaxLength="50" />
           <Property Name="PlannedDateFrom" Type="datetime" />
@@ -170,6 +178,23 @@
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="WorkFlowStepName" Type="nvarchar" MaxLength="50" />
           <Property Name="SpecificationID" Type="char" MaxLength="12" />
+          <Property Name="IsArchived" Type="bit" />
+        </EntityType>
+        <EntityType Name="MOProductSpecification">
+          <Key>
+            <PropertyRef Name="MOProductSpecificationId" />
+          </Key>
+          <Property Name="MOProductSpecificationId" Type="char" MaxLength="12" Nullable="false" />
+          <Property Name="MOId" Type="char" MaxLength="12" />
+          <Property Name="ProductId" Type="char" MaxLength="12" />
+          <Property Name="SpecificationId" Type="char" MaxLength="12" />
+          <Property Name="StandardWorkingTime" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="UOMName" Type="nvarchar" MaxLength="20" />
+          <Property Name="WorkcenterShortName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ItemSequence" Type="nvarchar" MaxLength="50" />
+          <Property Name="ERPSequence" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="ERPDate" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -200,20 +225,21 @@
           <Property Name="CustomerPN" Type="varchar" MaxLength="50" />
           <Property Name="BoxLabelId" Type="char" MaxLength="12" />
           <Property Name="WorkflowId" Type="char" MaxLength="12" />
-          <Property Name="StandardCost" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="StandardCapacity" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="CurrentCost" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="Weight" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="NetWeight" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="StandardCost" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="StandardCapacity" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="CurrentCost" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="Weight" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="NetWeight" Type="decimal" Precision="18" Scale="4" />
           <Property Name="IsFIFO" Type="bit" />
           <Property Name="IsExceedPicking" Type="bit" />
           <Property Name="SafeStorageTime" Type="int" />
-          <Property Name="SafetyInventory" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="MaxiInventory" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SafetyInventory" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="MaxiInventory" Type="decimal" Precision="18" Scale="4" />
           <Property Name="DeleteFlag" Type="char" MaxLength="10" />
           <Property Name="ModifyDate" Type="datetime" />
           <Property Name="StandCapacity" Type="float" />
           <Property Name="IsUrgency" Type="bit" />
+          <Property Name="IsRM" Type="bit" />
           <Property Name="ProjectCode" Type="nvarchar" MaxLength="50" />
           <Property Name="IsSendQCByProductionDate" Type="bit" />
           <Property Name="IsReceiveByBox" Type="bit" />
@@ -226,7 +252,7 @@
           <Property Name="SNRuleId" Type="char" MaxLength="12" />
           <Property Name="FactoryId" Type="char" MaxLength="12" />
           <Property Name="BOMLevel" Type="int" />
-          <Property Name="LabourCost" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="LabourCost" Type="decimal" Precision="18" Scale="4" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="SAP_WERKS" Type="char" MaxLength="4" />
           <Property Name="SAP_LVORM" Type="char" MaxLength="1" />
@@ -235,6 +261,8 @@
           <Property Name="ERPNo" Type="nvarchar" MaxLength="50" />
           <Property Name="ERPDate" Type="varbinary" MaxLength="50" />
           <Property Name="SAP_ZEINR" Type="nvarchar" MaxLength="50" />
+          <Property Name="Warranty" Type="int" />
+          <Property Name="ServiceLife" Type="int" />
         </EntityType>
         <EntityType Name="ProductFamily">
           <Key>
@@ -247,7 +275,9 @@
           <Property Name="ParentProductFamilyId" Type="char" MaxLength="12" />
           <Property Name="workflowid" Type="char" MaxLength="12" />
           <Property Name="SafeStorageTime" Type="int" />
+          <Property Name="MaxMOItemTaskCount" Type="int" />
           <Property Name="ERPNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="ControlNum" Type="bigint" />
           <Property Name="CreateDate" Type="datetime" />
         </EntityType>
         <EntityType Name="ProductRoot">
@@ -416,6 +446,7 @@
           <Property Name="CostCenterNo" Type="nvarchar" MaxLength="50" />
           <Property Name="ERPNo" Type="nvarchar" MaxLength="50" />
           <Property Name="ERPName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ControlNum" Type="bigint" />
         </EntityType>
         <EntityType Name="Venture_Product">
           <Key>
@@ -474,64 +505,62 @@
           <Key>
             <PropertyRef Name="MOId" />
           </Key>
-          <Property Name="MOId" Type="char" MaxLength="12" Nullable="false" />
-          <Property Name="MOName" Type="nvarchar" MaxLength="50" />
-          <Property Name="MODescription" Type="nvarchar" MaxLength="100" />
-          <Property Name="MOTypeId" Type="char" MaxLength="12" />
-          <Property Name="MOClassId" Type="char" MaxLength="12" />
-          <Property Name="MOStatusId" Type="char" MaxLength="2" />
-          <Property Name="MOStatus" Type="varchar" MaxLength="20" />
-          <Property Name="ProductId" Type="char" MaxLength="12" />
-          <Property Name="BOMId" Type="char" MaxLength="12" />
-          <Property Name="SalaryCalcTypeId" Type="char" MaxLength="12" />
-          <Property Name="PlannedDateFrom" Type="datetime" />
-          <Property Name="PlannedDateTo" Type="datetime" />
-          <Property Name="ExecuteDateFrom" Type="datetime" />
-          <Property Name="ExecuteDateTo" Type="datetime" />
-          <Property Name="MOQtyRequired" Type="decimal" Precision="18" Scale="4" />
-          <Property Name="MOQtyDone" Type="decimal" Precision="18" Scale="4" />
-          <Property Name="MOQtyCurrent" Type="decimal" Precision="19" Scale="4" />
-          <Property Name="BOMName" Type="nvarchar" MaxLength="50" />
-          <Property Name="WorkflowId" Type="char" MaxLength="12" />
-          <Property Name="PickStatus" Type="char" MaxLength="2" />
-          <Property Name="PriorityLevel" Type="char" MaxLength="5" />
-          <Property Name="SOId" Type="char" MaxLength="12" />
-          <Property Name="SOName" Type="nvarchar" MaxLength="50" />
-          <Property Name="CustomerId" Type="char" MaxLength="12" />
-          <Property Name="ParentMOId" Type="char" MaxLength="12" />
-          <Property Name="FactoryId" Type="char" MaxLength="12" />
-          <Property Name="BatchCode" Type="nvarchar" MaxLength="50" />
-          <Property Name="IsPickingListUpload" Type="bit" />
-          <Property Name="MinPack" Type="int" />
-          <Property Name="ApproveUserId" Type="char" MaxLength="12" />
           <Property Name="ApproveDate" Type="datetime" />
-          <Property Name="ReleaseDate" Type="datetime" />
-          <Property Name="StartWorkDate" Type="datetime" />
+          <Property Name="ApproveUserId" Type="char" MaxLength="12" />
+          <Property Name="BOMId" Type="char" MaxLength="12" />
+          <Property Name="BOMName" Type="nvarchar" MaxLength="50" />
+          <Property Name="BatchCode" Type="nvarchar" MaxLength="50" />
           <Property Name="CloseDate" Type="datetime" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="CreateUserId" Type="char" MaxLength="12" />
+          <Property Name="CreateUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CustomerId" Type="char" MaxLength="12" />
           <Property Name="DeleteFlag" Type="char" MaxLength="10" />
           <Property Name="ERPDate" Type="varbinary" MaxLength="50" />
           <Property Name="ERPId" Type="nvarchar" MaxLength="50" />
           <Property Name="ERPNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExecuteDateFrom" Type="datetime" />
+          <Property Name="ExecuteDateTo" Type="datetime" />
+          <Property Name="FactoryId" Type="char" MaxLength="12" />
+          <Property Name="IsPickingListUpload" Type="bit" />
           <Property Name="ItemSequence" Type="char" MaxLength="2" />
+          <Property Name="MOClassId" Type="char" MaxLength="12" />
+          <Property Name="MODescription" Type="nvarchar" MaxLength="100" />
+          <Property Name="MOId" Type="char" MaxLength="12" Nullable="false" />
+          <Property Name="MOName" Type="nvarchar" MaxLength="50" />
+          <Property Name="MOQtyCurrent" Type="decimal" Precision="19" Scale="2" />
+          <Property Name="MOQtyDone" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="MOQtyRequired" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="MOStatus" Type="varchar" MaxLength="20" />
+          <Property Name="MOStatusId" Type="char" MaxLength="2" />
+          <Property Name="MOTypeId" Type="char" MaxLength="12" />
+          <Property Name="MinPack" Type="int" />
           <Property Name="ModifyDate" Type="datetime" />
-          <Property Name="CreateUserId" Type="char" MaxLength="12" />
-          <Property Name="CreateDate" Type="datetime" />
-          <Property Name="SAP_AUART" Type="char" MaxLength="4" />
-          <Property Name="SAP_BUKRS" Type="char" MaxLength="4" />
+          <Property Name="ParentMOId" Type="char" MaxLength="12" />
+          <Property Name="PickStatus" Type="char" MaxLength="2" />
+          <Property Name="PlannedDateFrom" Type="datetime" />
+          <Property Name="PlannedDateTo" Type="datetime" />
+          <Property Name="PriorityLevel" Type="char" MaxLength="5" />
+          <Property Name="ProductId" Type="char" MaxLength="12" />
+          <Property Name="ReleaseDate" Type="datetime" />
+          <Property Name="SAP_ADD3" Type="nvarchar" MaxLength="200" />
+          <Property Name="SAP_ADD4" Type="nvarchar" MaxLength="100" />
           <Property Name="SAP_AEDAT" Type="datetime" />
-          <Property Name="SAP_WERKS" Type="char" MaxLength="4" />
-          <Property Name="SAP_GSBER" Type="char" MaxLength="4" />
+          <Property Name="SAP_AUART" Type="char" MaxLength="4" />
+          <Property Name="SAP_BESKZ" Type="nvarchar" MaxLength="50" />
+          <Property Name="SAP_BUKRS" Type="char" MaxLength="4" />
+          <Property Name="SAP_CHARG" Type="nvarchar" MaxLength="50" />
           <Property Name="SAP_GMEIN" Type="nvarchar" MaxLength="3" />
-          <Property Name="SAP_VERID" Type="char" MaxLength="4" />
+          <Property Name="SAP_GSBER" Type="char" MaxLength="4" />
           <Property Name="SAP_PHAS0" Type="char" MaxLength="1" />
           <Property Name="SAP_PHAS1" Type="char" MaxLength="1" />
           <Property Name="SAP_PHAS2" Type="char" MaxLength="1" />
           <Property Name="SAP_PHAS3" Type="char" MaxLength="1" />
           <Property Name="SAP_PSMNG" Type="float" />
-          <Property Name="SAP_ADD3" Type="nvarchar" MaxLength="200" />
-          <Property Name="SAP_ADD4" Type="nvarchar" MaxLength="100" />
-          <Property Name="SAP_BESKZ" Type="nvarchar" MaxLength="50" />
-          <Property Name="CreateUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="SAP_Remarks" Type="nvarchar" MaxLength="50" />
+          <Property Name="SAP_VDATU" Type="nvarchar" MaxLength="50" />
+          <Property Name="SAP_VERID" Type="char" MaxLength="4" />
+          <Property Name="SAP_WERKS" Type="char" MaxLength="4" />
           <Property Name="SAP_Z0001" Type="nvarchar(max)" />
           <Property Name="SAP_Z0002" Type="nvarchar(max)" />
           <Property Name="SAP_Z0003" Type="nvarchar(max)" />
@@ -540,9 +569,13 @@
           <Property Name="SAP_Z0008" Type="nvarchar(max)" />
           <Property Name="SAP_Z0009" Type="nvarchar(max)" />
           <Property Name="SAP_Z010" Type="nvarchar(max)" />
-          <Property Name="SAP_VDATU" Type="nvarchar" MaxLength="50" />
-          <Property Name="SAP_CHARG" Type="nvarchar" MaxLength="50" />
+          <Property Name="SOId" Type="char" MaxLength="12" />
+          <Property Name="SOName" Type="nvarchar" MaxLength="50" />
+          <Property Name="SOSequence" Type="nvarchar" MaxLength="50" />
+          <Property Name="SalaryCalcTypeId" Type="char" MaxLength="12" />
           <Property Name="SendMaterialDate" Type="datetime" />
+          <Property Name="StartWorkDate" Type="datetime" />
+          <Property Name="WorkflowId" Type="char" MaxLength="12" />
         </EntityType>
         <!--生成过程中发现错误:
 警告 6002: 表/视图“OrBitMOM_Kocel.dbo.ChanchengPinMO”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
@@ -550,64 +583,62 @@
           <Key>
             <PropertyRef Name="MOId" />
           </Key>
-          <Property Name="MOId" Type="char" MaxLength="12" Nullable="false" />
-          <Property Name="MOName" Type="nvarchar" MaxLength="50" />
-          <Property Name="MODescription" Type="nvarchar" MaxLength="100" />
-          <Property Name="MOTypeId" Type="char" MaxLength="12" />
-          <Property Name="MOClassId" Type="char" MaxLength="12" />
-          <Property Name="MOStatusId" Type="char" MaxLength="2" />
-          <Property Name="MOStatus" Type="varchar" MaxLength="20" />
-          <Property Name="ProductId" Type="char" MaxLength="12" />
-          <Property Name="BOMId" Type="char" MaxLength="12" />
-          <Property Name="SalaryCalcTypeId" Type="char" MaxLength="12" />
-          <Property Name="PlannedDateFrom" Type="datetime" />
-          <Property Name="PlannedDateTo" Type="datetime" />
-          <Property Name="ExecuteDateFrom" Type="datetime" />
-          <Property Name="ExecuteDateTo" Type="datetime" />
-          <Property Name="MOQtyRequired" Type="decimal" Precision="18" Scale="4" />
-          <Property Name="MOQtyDone" Type="decimal" Precision="18" Scale="4" />
-          <Property Name="MOQtyCurrent" Type="decimal" Precision="19" Scale="4" />
-          <Property Name="BOMName" Type="nvarchar" MaxLength="50" />
-          <Property Name="WorkflowId" Type="char" MaxLength="12" />
-          <Property Name="PickStatus" Type="char" MaxLength="2" />
-          <Property Name="PriorityLevel" Type="char" MaxLength="5" />
-          <Property Name="SOId" Type="char" MaxLength="12" />
-          <Property Name="SOName" Type="nvarchar" MaxLength="50" />
-          <Property Name="CustomerId" Type="char" MaxLength="12" />
-          <Property Name="ParentMOId" Type="char" MaxLength="12" />
-          <Property Name="FactoryId" Type="char" MaxLength="12" />
-          <Property Name="BatchCode" Type="nvarchar" MaxLength="50" />
-          <Property Name="IsPickingListUpload" Type="bit" />
-          <Property Name="MinPack" Type="int" />
-          <Property Name="ApproveUserId" Type="char" MaxLength="12" />
           <Property Name="ApproveDate" Type="datetime" />
-          <Property Name="ReleaseDate" Type="datetime" />
-          <Property Name="StartWorkDate" Type="datetime" />
+          <Property Name="ApproveUserId" Type="char" MaxLength="12" />
+          <Property Name="BOMId" Type="char" MaxLength="12" />
+          <Property Name="BOMName" Type="nvarchar" MaxLength="50" />
+          <Property Name="BatchCode" Type="nvarchar" MaxLength="50" />
           <Property Name="CloseDate" Type="datetime" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="CreateUserId" Type="char" MaxLength="12" />
+          <Property Name="CreateUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CustomerId" Type="char" MaxLength="12" />
           <Property Name="DeleteFlag" Type="char" MaxLength="10" />
           <Property Name="ERPDate" Type="varbinary" MaxLength="50" />
           <Property Name="ERPId" Type="nvarchar" MaxLength="50" />
           <Property Name="ERPNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExecuteDateFrom" Type="datetime" />
+          <Property Name="ExecuteDateTo" Type="datetime" />
+          <Property Name="FactoryId" Type="char" MaxLength="12" />
+          <Property Name="IsPickingListUpload" Type="bit" />
           <Property Name="ItemSequence" Type="char" MaxLength="2" />
+          <Property Name="MOClassId" Type="char" MaxLength="12" />
+          <Property Name="MODescription" Type="nvarchar" MaxLength="100" />
+          <Property Name="MOId" Type="char" MaxLength="12" Nullable="false" />
+          <Property Name="MOName" Type="nvarchar" MaxLength="50" />
+          <Property Name="MOQtyCurrent" Type="decimal" Precision="19" Scale="2" />
+          <Property Name="MOQtyDone" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="MOQtyRequired" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="MOStatus" Type="varchar" MaxLength="20" />
+          <Property Name="MOStatusId" Type="char" MaxLength="2" />
+          <Property Name="MOTypeId" Type="char" MaxLength="12" />
+          <Property Name="MinPack" Type="int" />
           <Property Name="ModifyDate" Type="datetime" />
-          <Property Name="CreateUserId" Type="char" MaxLength="12" />
-          <Property Name="CreateDate" Type="datetime" />
-          <Property Name="SAP_AUART" Type="char" MaxLength="4" />
-          <Property Name="SAP_BUKRS" Type="char" MaxLength="4" />
+          <Property Name="ParentMOId" Type="char" MaxLength="12" />
+          <Property Name="PickStatus" Type="char" MaxLength="2" />
+          <Property Name="PlannedDateFrom" Type="datetime" />
+          <Property Name="PlannedDateTo" Type="datetime" />
+          <Property Name="PriorityLevel" Type="char" MaxLength="5" />
+          <Property Name="ProductId" Type="char" MaxLength="12" />
+          <Property Name="ReleaseDate" Type="datetime" />
+          <Property Name="SAP_ADD3" Type="nvarchar" MaxLength="200" />
+          <Property Name="SAP_ADD4" Type="nvarchar" MaxLength="100" />
           <Property Name="SAP_AEDAT" Type="datetime" />
-          <Property Name="SAP_WERKS" Type="char" MaxLength="4" />
-          <Property Name="SAP_GSBER" Type="char" MaxLength="4" />
+          <Property Name="SAP_AUART" Type="char" MaxLength="4" />
+          <Property Name="SAP_BESKZ" Type="nvarchar" MaxLength="50" />
+          <Property Name="SAP_BUKRS" Type="char" MaxLength="4" />
+          <Property Name="SAP_CHARG" Type="nvarchar" MaxLength="50" />
           <Property Name="SAP_GMEIN" Type="nvarchar" MaxLength="3" />
-          <Property Name="SAP_VERID" Type="char" MaxLength="4" />
+          <Property Name="SAP_GSBER" Type="char" MaxLength="4" />
           <Property Name="SAP_PHAS0" Type="char" MaxLength="1" />
           <Property Name="SAP_PHAS1" Type="char" MaxLength="1" />
           <Property Name="SAP_PHAS2" Type="char" MaxLength="1" />
           <Property Name="SAP_PHAS3" Type="char" MaxLength="1" />
           <Property Name="SAP_PSMNG" Type="float" />
-          <Property Name="SAP_ADD3" Type="nvarchar" MaxLength="200" />
-          <Property Name="SAP_ADD4" Type="nvarchar" MaxLength="100" />
-          <Property Name="SAP_BESKZ" Type="nvarchar" MaxLength="50" />
-          <Property Name="CreateUserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="SAP_Remarks" Type="nvarchar" MaxLength="50" />
+          <Property Name="SAP_VDATU" Type="nvarchar" MaxLength="50" />
+          <Property Name="SAP_VERID" Type="char" MaxLength="4" />
+          <Property Name="SAP_WERKS" Type="char" MaxLength="4" />
           <Property Name="SAP_Z0001" Type="nvarchar(max)" />
           <Property Name="SAP_Z0002" Type="nvarchar(max)" />
           <Property Name="SAP_Z0003" Type="nvarchar(max)" />
@@ -616,9 +647,13 @@
           <Property Name="SAP_Z0008" Type="nvarchar(max)" />
           <Property Name="SAP_Z0009" Type="nvarchar(max)" />
           <Property Name="SAP_Z010" Type="nvarchar(max)" />
-          <Property Name="SAP_VDATU" Type="nvarchar" MaxLength="50" />
-          <Property Name="SAP_CHARG" Type="nvarchar" MaxLength="50" />
+          <Property Name="SOId" Type="char" MaxLength="12" />
+          <Property Name="SOName" Type="nvarchar" MaxLength="50" />
+          <Property Name="SOSequence" Type="nvarchar" MaxLength="50" />
+          <Property Name="SalaryCalcTypeId" Type="char" MaxLength="12" />
           <Property Name="SendMaterialDate" Type="datetime" />
+          <Property Name="StartWorkDate" Type="datetime" />
+          <Property Name="WorkflowId" Type="char" MaxLength="12" />
         </EntityType>
         <EntityContainer Name="OrBitMOM_KocelModelStoreContainer">
           <EntitySet Name="BOM" EntityType="Self.BOM" Schema="dbo" store:Type="Tables" />
@@ -626,6 +661,7 @@
           <EntitySet Name="Factory" EntityType="Self.Factory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MO" EntityType="Self.MO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MOItemTask" EntityType="Self.MOItemTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MOProductSpecification" EntityType="Self.MOProductSpecification" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductFamily" EntityType="Self.ProductFamily" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductRoot" EntityType="Self.ProductRoot" Schema="dbo" store:Type="Tables" />
@@ -643,64 +679,62 @@
           <EntitySet Name="WorkflowStepExpandDefault" EntityType="Self.WorkflowStepExpandDefault" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BanChengPinMO" EntityType="Self.BanChengPinMO" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [BanChengPinMO].[MOId] AS [MOId], 
-    [BanChengPinMO].[MOName] AS [MOName], 
-    [BanChengPinMO].[MODescription] AS [MODescription], 
-    [BanChengPinMO].[MOTypeId] AS [MOTypeId], 
-    [BanChengPinMO].[MOClassId] AS [MOClassId], 
-    [BanChengPinMO].[MOStatusId] AS [MOStatusId], 
-    [BanChengPinMO].[MOStatus] AS [MOStatus], 
-    [BanChengPinMO].[ProductId] AS [ProductId], 
-    [BanChengPinMO].[BOMId] AS [BOMId], 
-    [BanChengPinMO].[SalaryCalcTypeId] AS [SalaryCalcTypeId], 
-    [BanChengPinMO].[PlannedDateFrom] AS [PlannedDateFrom], 
-    [BanChengPinMO].[PlannedDateTo] AS [PlannedDateTo], 
-    [BanChengPinMO].[ExecuteDateFrom] AS [ExecuteDateFrom], 
-    [BanChengPinMO].[ExecuteDateTo] AS [ExecuteDateTo], 
-    [BanChengPinMO].[MOQtyRequired] AS [MOQtyRequired], 
-    [BanChengPinMO].[MOQtyDone] AS [MOQtyDone], 
-    [BanChengPinMO].[MOQtyCurrent] AS [MOQtyCurrent], 
-    [BanChengPinMO].[BOMName] AS [BOMName], 
-    [BanChengPinMO].[WorkflowId] AS [WorkflowId], 
-    [BanChengPinMO].[PickStatus] AS [PickStatus], 
-    [BanChengPinMO].[PriorityLevel] AS [PriorityLevel], 
-    [BanChengPinMO].[SOId] AS [SOId], 
-    [BanChengPinMO].[SOName] AS [SOName], 
-    [BanChengPinMO].[CustomerId] AS [CustomerId], 
-    [BanChengPinMO].[ParentMOId] AS [ParentMOId], 
-    [BanChengPinMO].[FactoryId] AS [FactoryId], 
-    [BanChengPinMO].[BatchCode] AS [BatchCode], 
-    [BanChengPinMO].[IsPickingListUpload] AS [IsPickingListUpload], 
-    [BanChengPinMO].[MinPack] AS [MinPack], 
-    [BanChengPinMO].[ApproveUserId] AS [ApproveUserId], 
     [BanChengPinMO].[ApproveDate] AS [ApproveDate], 
-    [BanChengPinMO].[ReleaseDate] AS [ReleaseDate], 
-    [BanChengPinMO].[StartWorkDate] AS [StartWorkDate], 
+    [BanChengPinMO].[ApproveUserId] AS [ApproveUserId], 
+    [BanChengPinMO].[BOMId] AS [BOMId], 
+    [BanChengPinMO].[BOMName] AS [BOMName], 
+    [BanChengPinMO].[BatchCode] AS [BatchCode], 
     [BanChengPinMO].[CloseDate] AS [CloseDate], 
+    [BanChengPinMO].[CreateDate] AS [CreateDate], 
+    [BanChengPinMO].[CreateUserId] AS [CreateUserId], 
+    [BanChengPinMO].[CreateUserName] AS [CreateUserName], 
+    [BanChengPinMO].[CustomerId] AS [CustomerId], 
     [BanChengPinMO].[DeleteFlag] AS [DeleteFlag], 
     [BanChengPinMO].[ERPDate] AS [ERPDate], 
     [BanChengPinMO].[ERPId] AS [ERPId], 
     [BanChengPinMO].[ERPNo] AS [ERPNo], 
+    [BanChengPinMO].[ExecuteDateFrom] AS [ExecuteDateFrom], 
+    [BanChengPinMO].[ExecuteDateTo] AS [ExecuteDateTo], 
+    [BanChengPinMO].[FactoryId] AS [FactoryId], 
+    [BanChengPinMO].[IsPickingListUpload] AS [IsPickingListUpload], 
     [BanChengPinMO].[ItemSequence] AS [ItemSequence], 
+    [BanChengPinMO].[MOClassId] AS [MOClassId], 
+    [BanChengPinMO].[MODescription] AS [MODescription], 
+    [BanChengPinMO].[MOId] AS [MOId], 
+    [BanChengPinMO].[MOName] AS [MOName], 
+    [BanChengPinMO].[MOQtyCurrent] AS [MOQtyCurrent], 
+    [BanChengPinMO].[MOQtyDone] AS [MOQtyDone], 
+    [BanChengPinMO].[MOQtyRequired] AS [MOQtyRequired], 
+    [BanChengPinMO].[MOStatus] AS [MOStatus], 
+    [BanChengPinMO].[MOStatusId] AS [MOStatusId], 
+    [BanChengPinMO].[MOTypeId] AS [MOTypeId], 
+    [BanChengPinMO].[MinPack] AS [MinPack], 
     [BanChengPinMO].[ModifyDate] AS [ModifyDate], 
-    [BanChengPinMO].[CreateUserId] AS [CreateUserId], 
-    [BanChengPinMO].[CreateDate] AS [CreateDate], 
-    [BanChengPinMO].[SAP_AUART] AS [SAP_AUART], 
-    [BanChengPinMO].[SAP_BUKRS] AS [SAP_BUKRS], 
+    [BanChengPinMO].[ParentMOId] AS [ParentMOId], 
+    [BanChengPinMO].[PickStatus] AS [PickStatus], 
+    [BanChengPinMO].[PlannedDateFrom] AS [PlannedDateFrom], 
+    [BanChengPinMO].[PlannedDateTo] AS [PlannedDateTo], 
+    [BanChengPinMO].[PriorityLevel] AS [PriorityLevel], 
+    [BanChengPinMO].[ProductId] AS [ProductId], 
+    [BanChengPinMO].[ReleaseDate] AS [ReleaseDate], 
+    [BanChengPinMO].[SAP_ADD3] AS [SAP_ADD3], 
+    [BanChengPinMO].[SAP_ADD4] AS [SAP_ADD4], 
     [BanChengPinMO].[SAP_AEDAT] AS [SAP_AEDAT], 
-    [BanChengPinMO].[SAP_WERKS] AS [SAP_WERKS], 
-    [BanChengPinMO].[SAP_GSBER] AS [SAP_GSBER], 
+    [BanChengPinMO].[SAP_AUART] AS [SAP_AUART], 
+    [BanChengPinMO].[SAP_BESKZ] AS [SAP_BESKZ], 
+    [BanChengPinMO].[SAP_BUKRS] AS [SAP_BUKRS], 
+    [BanChengPinMO].[SAP_CHARG] AS [SAP_CHARG], 
     [BanChengPinMO].[SAP_GMEIN] AS [SAP_GMEIN], 
-    [BanChengPinMO].[SAP_VERID] AS [SAP_VERID], 
+    [BanChengPinMO].[SAP_GSBER] AS [SAP_GSBER], 
     [BanChengPinMO].[SAP_PHAS0] AS [SAP_PHAS0], 
     [BanChengPinMO].[SAP_PHAS1] AS [SAP_PHAS1], 
     [BanChengPinMO].[SAP_PHAS2] AS [SAP_PHAS2], 
     [BanChengPinMO].[SAP_PHAS3] AS [SAP_PHAS3], 
     [BanChengPinMO].[SAP_PSMNG] AS [SAP_PSMNG], 
-    [BanChengPinMO].[SAP_ADD3] AS [SAP_ADD3], 
-    [BanChengPinMO].[SAP_ADD4] AS [SAP_ADD4], 
-    [BanChengPinMO].[SAP_BESKZ] AS [SAP_BESKZ], 
-    [BanChengPinMO].[CreateUserName] AS [CreateUserName], 
+    [BanChengPinMO].[SAP_Remarks] AS [SAP_Remarks], 
+    [BanChengPinMO].[SAP_VDATU] AS [SAP_VDATU], 
+    [BanChengPinMO].[SAP_VERID] AS [SAP_VERID], 
+    [BanChengPinMO].[SAP_WERKS] AS [SAP_WERKS], 
     [BanChengPinMO].[SAP_Z0001] AS [SAP_Z0001], 
     [BanChengPinMO].[SAP_Z0002] AS [SAP_Z0002], 
     [BanChengPinMO].[SAP_Z0003] AS [SAP_Z0003], 
@@ -709,71 +743,73 @@
     [BanChengPinMO].[SAP_Z0008] AS [SAP_Z0008], 
     [BanChengPinMO].[SAP_Z0009] AS [SAP_Z0009], 
     [BanChengPinMO].[SAP_Z010] AS [SAP_Z010], 
-    [BanChengPinMO].[SAP_VDATU] AS [SAP_VDATU], 
-    [BanChengPinMO].[SAP_CHARG] AS [SAP_CHARG], 
-    [BanChengPinMO].[SendMaterialDate] AS [SendMaterialDate]
+    [BanChengPinMO].[SOId] AS [SOId], 
+    [BanChengPinMO].[SOName] AS [SOName], 
+    [BanChengPinMO].[SOSequence] AS [SOSequence], 
+    [BanChengPinMO].[SalaryCalcTypeId] AS [SalaryCalcTypeId], 
+    [BanChengPinMO].[SendMaterialDate] AS [SendMaterialDate], 
+    [BanChengPinMO].[StartWorkDate] AS [StartWorkDate], 
+    [BanChengPinMO].[WorkflowId] AS [WorkflowId]
     FROM [dbo].[BanChengPinMO] AS [BanChengPinMO]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="ChanchengPinMO" EntityType="Self.ChanchengPinMO" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [ChanchengPinMO].[MOId] AS [MOId], 
-    [ChanchengPinMO].[MOName] AS [MOName], 
-    [ChanchengPinMO].[MODescription] AS [MODescription], 
-    [ChanchengPinMO].[MOTypeId] AS [MOTypeId], 
-    [ChanchengPinMO].[MOClassId] AS [MOClassId], 
-    [ChanchengPinMO].[MOStatusId] AS [MOStatusId], 
-    [ChanchengPinMO].[MOStatus] AS [MOStatus], 
-    [ChanchengPinMO].[ProductId] AS [ProductId], 
-    [ChanchengPinMO].[BOMId] AS [BOMId], 
-    [ChanchengPinMO].[SalaryCalcTypeId] AS [SalaryCalcTypeId], 
-    [ChanchengPinMO].[PlannedDateFrom] AS [PlannedDateFrom], 
-    [ChanchengPinMO].[PlannedDateTo] AS [PlannedDateTo], 
-    [ChanchengPinMO].[ExecuteDateFrom] AS [ExecuteDateFrom], 
-    [ChanchengPinMO].[ExecuteDateTo] AS [ExecuteDateTo], 
-    [ChanchengPinMO].[MOQtyRequired] AS [MOQtyRequired], 
-    [ChanchengPinMO].[MOQtyDone] AS [MOQtyDone], 
-    [ChanchengPinMO].[MOQtyCurrent] AS [MOQtyCurrent], 
-    [ChanchengPinMO].[BOMName] AS [BOMName], 
-    [ChanchengPinMO].[WorkflowId] AS [WorkflowId], 
-    [ChanchengPinMO].[PickStatus] AS [PickStatus], 
-    [ChanchengPinMO].[PriorityLevel] AS [PriorityLevel], 
-    [ChanchengPinMO].[SOId] AS [SOId], 
-    [ChanchengPinMO].[SOName] AS [SOName], 
-    [ChanchengPinMO].[CustomerId] AS [CustomerId], 
-    [ChanchengPinMO].[ParentMOId] AS [ParentMOId], 
-    [ChanchengPinMO].[FactoryId] AS [FactoryId], 
-    [ChanchengPinMO].[BatchCode] AS [BatchCode], 
-    [ChanchengPinMO].[IsPickingListUpload] AS [IsPickingListUpload], 
-    [ChanchengPinMO].[MinPack] AS [MinPack], 
-    [ChanchengPinMO].[ApproveUserId] AS [ApproveUserId], 
     [ChanchengPinMO].[ApproveDate] AS [ApproveDate], 
-    [ChanchengPinMO].[ReleaseDate] AS [ReleaseDate], 
-    [ChanchengPinMO].[StartWorkDate] AS [StartWorkDate], 
+    [ChanchengPinMO].[ApproveUserId] AS [ApproveUserId], 
+    [ChanchengPinMO].[BOMId] AS [BOMId], 
+    [ChanchengPinMO].[BOMName] AS [BOMName], 
+    [ChanchengPinMO].[BatchCode] AS [BatchCode], 
     [ChanchengPinMO].[CloseDate] AS [CloseDate], 
+    [ChanchengPinMO].[CreateDate] AS [CreateDate], 
+    [ChanchengPinMO].[CreateUserId] AS [CreateUserId], 
+    [ChanchengPinMO].[CreateUserName] AS [CreateUserName], 
+    [ChanchengPinMO].[CustomerId] AS [CustomerId], 
     [ChanchengPinMO].[DeleteFlag] AS [DeleteFlag], 
     [ChanchengPinMO].[ERPDate] AS [ERPDate], 
     [ChanchengPinMO].[ERPId] AS [ERPId], 
     [ChanchengPinMO].[ERPNo] AS [ERPNo], 
+    [ChanchengPinMO].[ExecuteDateFrom] AS [ExecuteDateFrom], 
+    [ChanchengPinMO].[ExecuteDateTo] AS [ExecuteDateTo], 
+    [ChanchengPinMO].[FactoryId] AS [FactoryId], 
+    [ChanchengPinMO].[IsPickingListUpload] AS [IsPickingListUpload], 
     [ChanchengPinMO].[ItemSequence] AS [ItemSequence], 
+    [ChanchengPinMO].[MOClassId] AS [MOClassId], 
+    [ChanchengPinMO].[MODescription] AS [MODescription], 
+    [ChanchengPinMO].[MOId] AS [MOId], 
+    [ChanchengPinMO].[MOName] AS [MOName], 
+    [ChanchengPinMO].[MOQtyCurrent] AS [MOQtyCurrent], 
+    [ChanchengPinMO].[MOQtyDone] AS [MOQtyDone], 
+    [ChanchengPinMO].[MOQtyRequired] AS [MOQtyRequired], 
+    [ChanchengPinMO].[MOStatus] AS [MOStatus], 
+    [ChanchengPinMO].[MOStatusId] AS [MOStatusId], 
+    [ChanchengPinMO].[MOTypeId] AS [MOTypeId], 
+    [ChanchengPinMO].[MinPack] AS [MinPack], 
     [ChanchengPinMO].[ModifyDate] AS [ModifyDate], 
-    [ChanchengPinMO].[CreateUserId] AS [CreateUserId], 
-    [ChanchengPinMO].[CreateDate] AS [CreateDate], 
-    [ChanchengPinMO].[SAP_AUART] AS [SAP_AUART], 
-    [ChanchengPinMO].[SAP_BUKRS] AS [SAP_BUKRS], 
+    [ChanchengPinMO].[ParentMOId] AS [ParentMOId], 
+    [ChanchengPinMO].[PickStatus] AS [PickStatus], 
+    [ChanchengPinMO].[PlannedDateFrom] AS [PlannedDateFrom], 
+    [ChanchengPinMO].[PlannedDateTo] AS [PlannedDateTo], 
+    [ChanchengPinMO].[PriorityLevel] AS [PriorityLevel], 
+    [ChanchengPinMO].[ProductId] AS [ProductId], 
+    [ChanchengPinMO].[ReleaseDate] AS [ReleaseDate], 
+    [ChanchengPinMO].[SAP_ADD3] AS [SAP_ADD3], 
+    [ChanchengPinMO].[SAP_ADD4] AS [SAP_ADD4], 
     [ChanchengPinMO].[SAP_AEDAT] AS [SAP_AEDAT], 
-    [ChanchengPinMO].[SAP_WERKS] AS [SAP_WERKS], 
-    [ChanchengPinMO].[SAP_GSBER] AS [SAP_GSBER], 
+    [ChanchengPinMO].[SAP_AUART] AS [SAP_AUART], 
+    [ChanchengPinMO].[SAP_BESKZ] AS [SAP_BESKZ], 
+    [ChanchengPinMO].[SAP_BUKRS] AS [SAP_BUKRS], 
+    [ChanchengPinMO].[SAP_CHARG] AS [SAP_CHARG], 
     [ChanchengPinMO].[SAP_GMEIN] AS [SAP_GMEIN], 
-    [ChanchengPinMO].[SAP_VERID] AS [SAP_VERID], 
+    [ChanchengPinMO].[SAP_GSBER] AS [SAP_GSBER], 
     [ChanchengPinMO].[SAP_PHAS0] AS [SAP_PHAS0], 
     [ChanchengPinMO].[SAP_PHAS1] AS [SAP_PHAS1], 
     [ChanchengPinMO].[SAP_PHAS2] AS [SAP_PHAS2], 
     [ChanchengPinMO].[SAP_PHAS3] AS [SAP_PHAS3], 
     [ChanchengPinMO].[SAP_PSMNG] AS [SAP_PSMNG], 
-    [ChanchengPinMO].[SAP_ADD3] AS [SAP_ADD3], 
-    [ChanchengPinMO].[SAP_ADD4] AS [SAP_ADD4], 
-    [ChanchengPinMO].[SAP_BESKZ] AS [SAP_BESKZ], 
-    [ChanchengPinMO].[CreateUserName] AS [CreateUserName], 
+    [ChanchengPinMO].[SAP_Remarks] AS [SAP_Remarks], 
+    [ChanchengPinMO].[SAP_VDATU] AS [SAP_VDATU], 
+    [ChanchengPinMO].[SAP_VERID] AS [SAP_VERID], 
+    [ChanchengPinMO].[SAP_WERKS] AS [SAP_WERKS], 
     [ChanchengPinMO].[SAP_Z0001] AS [SAP_Z0001], 
     [ChanchengPinMO].[SAP_Z0002] AS [SAP_Z0002], 
     [ChanchengPinMO].[SAP_Z0003] AS [SAP_Z0003], 
@@ -782,9 +818,13 @@
     [ChanchengPinMO].[SAP_Z0008] AS [SAP_Z0008], 
     [ChanchengPinMO].[SAP_Z0009] AS [SAP_Z0009], 
     [ChanchengPinMO].[SAP_Z010] AS [SAP_Z010], 
-    [ChanchengPinMO].[SAP_VDATU] AS [SAP_VDATU], 
-    [ChanchengPinMO].[SAP_CHARG] AS [SAP_CHARG], 
-    [ChanchengPinMO].[SendMaterialDate] AS [SendMaterialDate]
+    [ChanchengPinMO].[SOId] AS [SOId], 
+    [ChanchengPinMO].[SOName] AS [SOName], 
+    [ChanchengPinMO].[SOSequence] AS [SOSequence], 
+    [ChanchengPinMO].[SalaryCalcTypeId] AS [SalaryCalcTypeId], 
+    [ChanchengPinMO].[SendMaterialDate] AS [SendMaterialDate], 
+    [ChanchengPinMO].[StartWorkDate] AS [StartWorkDate], 
+    [ChanchengPinMO].[WorkflowId] AS [WorkflowId]
     FROM [dbo].[ChanchengPinMO] AS [ChanchengPinMO]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
@@ -810,9 +850,9 @@
           <Property Name="PlannedDateTo" Type="DateTime" Precision="3" />
           <Property Name="ExecuteDateFrom" Type="DateTime" Precision="3" />
           <Property Name="ExecuteDateTo" Type="DateTime" Precision="3" />
-          <Property Name="MOQtyRequired" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="MOQtyDone" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="MOQtyCurrent" Type="Decimal" Precision="19" Scale="2" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="MOQtyRequired" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="MOQtyDone" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="MOQtyCurrent" Type="Decimal" Precision="19" Scale="4" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="BOMName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WorkflowId" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
           <Property Name="PickStatus" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
@@ -864,8 +904,15 @@
           <Property Name="SAP_Z010" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SAP_VDATU" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SendMaterialDate" Type="DateTime" Precision="3" Nullable="true" />
-          <Property Name="SAP_CHARG" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SAP_CHARG" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="SAP_Remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SOSequence" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FinishDate" Type="DateTime" Precision="3" />
+          <Property Name="IfKeyProduct" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TuoQiReason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MOStation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ControlNum" Type="Int64" />
+          <Property Name="IsArchived" Type="Boolean" />
         </EntityType>
         <EntityType Name="MOItemTask">
           <Key>
@@ -900,6 +947,8 @@
           <Property Name="WorkFlowStepName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SpecificationID" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
           <Property Name="ReleaseDate" Type="DateTime" Precision="3" />
+          <Property Name="PreviousMOItemTaskId" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
+          <Property Name="IsArchived" Type="Boolean" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -930,16 +979,16 @@
           <Property Name="CustomerPN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="BoxLabelId" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
           <Property Name="WorkflowId" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
-          <Property Name="StandardCost" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="StandardCapacity" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="CurrentCost" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="Weight" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="NetWeight" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="StandardCost" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="StandardCapacity" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="CurrentCost" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="Weight" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="NetWeight" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="IsFIFO" Type="Boolean" />
           <Property Name="IsExceedPicking" Type="Boolean" />
           <Property Name="SafeStorageTime" Type="Int32" />
-          <Property Name="SafetyInventory" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="MaxiInventory" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SafetyInventory" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="MaxiInventory" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="DeleteFlag" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="ModifyDate" Type="DateTime" Precision="3" />
           <Property Name="StandCapacity" Type="Double" />
@@ -956,7 +1005,7 @@
           <Property Name="SNRuleId" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
           <Property Name="FactoryId" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
           <Property Name="BOMLevel" Type="Int32" />
-          <Property Name="LabourCost" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LabourCost" Type="Decimal" Precision="18" Scale="4" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="SAP_WERKS" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
           <Property Name="SAP_LVORM" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
@@ -965,6 +1014,9 @@
           <Property Name="ERPNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ERPDate" Type="Binary" MaxLength="50" FixedLength="false" />
           <Property Name="SAP_ZEINR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsRM" Type="Boolean" />
+          <Property Name="Warranty" Type="Int32" />
+          <Property Name="ServiceLife" Type="Int32" />
         </EntityType>
         <EntityType Name="ProductFamily">
           <Key>
@@ -979,6 +1031,8 @@
           <Property Name="SafeStorageTime" Type="Int32" />
           <Property Name="ERPNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="MaxMOItemTaskCount" Type="Int32" />
+          <Property Name="ControlNum" Type="Int64" />
         </EntityType>
         <EntityType Name="ProductRoot">
           <Key>
@@ -1047,6 +1101,7 @@
           <Property Name="ERPNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ERPName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" />
+          <Property Name="ControlNum" Type="Int64" />
         </EntityType>
         <EntityType Name="Venture_Product">
           <Key>
@@ -1106,6 +1161,7 @@
           <EntitySet Name="Shift" EntityType="OrBitMOM_KocelModel.Shift" />
           <EntitySet Name="Venture_Shift" EntityType="OrBitMOM_KocelModel.Venture_Shift" />
           <EntitySet Name="VentureProductFamily" EntityType="OrBitMOM_KocelModel.VentureProductFamily" />
+          <EntitySet Name="MOProductSpecification" EntityType="OrBitMOM_KocelModel.MOProductSpecification" />
         </EntityContainer>
         <EntityType Name="BOM">
           <Key>
@@ -1196,9 +1252,9 @@
           <Property Name="PlannedDateTo" Type="DateTime" Precision="3" />
           <Property Name="ExecuteDateFrom" Type="DateTime" Precision="3" />
           <Property Name="ExecuteDateTo" Type="DateTime" Precision="3" />
-          <Property Name="MOQtyRequired" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="MOQtyDone" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="MOQtyCurrent" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="MOQtyRequired" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="MOQtyDone" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="MOQtyCurrent" Type="Decimal" Precision="19" Scale="2" />
           <Property Name="BOMName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WorkflowId" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
           <Property Name="PickStatus" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
@@ -1251,6 +1307,8 @@
           <Property Name="SAP_VDATU" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SAP_CHARG" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SendMaterialDate" Type="DateTime" Precision="3" Nullable="true" />
+          <Property Name="SAP_Remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SOSequence" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ChanchengPinMO">
           <Key>
@@ -1270,9 +1328,9 @@
           <Property Name="PlannedDateTo" Type="DateTime" Precision="3" />
           <Property Name="ExecuteDateFrom" Type="DateTime" Precision="3" />
           <Property Name="ExecuteDateTo" Type="DateTime" Precision="3" />
-          <Property Name="MOQtyRequired" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="MOQtyDone" Type="Decimal" Precision="18" Scale="4" />
-          <Property Name="MOQtyCurrent" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="MOQtyRequired" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="MOQtyDone" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="MOQtyCurrent" Type="Decimal" Precision="19" Scale="2" />
           <Property Name="BOMName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="WorkflowId" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
           <Property Name="PickStatus" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
@@ -1325,6 +1383,8 @@
           <Property Name="SAP_VDATU" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SAP_CHARG" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SendMaterialDate" Type="DateTime" Precision="3" Nullable="true" />
+          <Property Name="SAP_Remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SOSequence" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="SysUser">
           <Key>
@@ -1427,6 +1487,22 @@
           <Property Name="VentureId" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
           <Property Name="ProductFamilyId" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
         </EntityType>
+        <EntityType Name="MOProductSpecification">
+          <Key>
+            <PropertyRef Name="MOProductSpecificationId" />
+          </Key>
+          <Property Name="MOProductSpecificationId" Type="String" Nullable="false" MaxLength="12" FixedLength="true" Unicode="false" />
+          <Property Name="MOId" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
+          <Property Name="ProductId" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
+          <Property Name="SpecificationId" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
+          <Property Name="StandardWorkingTime" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="UOMName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="WorkcenterShortName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ItemSequence" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ERPSequence" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="ERPDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1436,6 +1512,13 @@
           <EntitySetMapping Name="MO">
             <EntityTypeMapping TypeName="OrBitMOM_KocelModel.MO">
               <MappingFragment StoreEntitySet="MO">
+                <ScalarProperty Name="IsArchived" ColumnName="IsArchived" />
+                <ScalarProperty Name="ControlNum" ColumnName="ControlNum" />
+                <ScalarProperty Name="MOStation" ColumnName="MOStation" />
+                <ScalarProperty Name="TuoQiReason" ColumnName="TuoQiReason" />
+                <ScalarProperty Name="IfKeyProduct" ColumnName="IfKeyProduct" />
+                <ScalarProperty Name="FinishDate" ColumnName="FinishDate" />
+                <ScalarProperty Name="SOSequence" ColumnName="SOSequence" />
                 <ScalarProperty Name="SAP_Remarks" ColumnName="SAP_Remarks" />
                 <ScalarProperty Name="SAP_CHARG" ColumnName="SAP_CHARG" />
                 <ScalarProperty Name="SendMaterialDate" ColumnName="SendMaterialDate" />
@@ -1512,6 +1595,8 @@
           <EntitySetMapping Name="MOItemTask">
             <EntityTypeMapping TypeName="OrBitMOM_KocelModel.MOItemTask">
               <MappingFragment StoreEntitySet="MOItemTask">
+                <ScalarProperty Name="IsArchived" ColumnName="IsArchived" />
+                <ScalarProperty Name="PreviousMOItemTaskId" ColumnName="PreviousMOItemTaskId" />
                 <ScalarProperty Name="ReleaseDate" ColumnName="ReleaseDate" />
                 <ScalarProperty Name="MOItemTaskId" ColumnName="MOItemTaskId" />
                 <ScalarProperty Name="MOItemTaskName" ColumnName="MOItemTaskName" />
@@ -1547,6 +1632,9 @@
           <EntitySetMapping Name="Product">
             <EntityTypeMapping TypeName="OrBitMOM_KocelModel.Product">
               <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ServiceLife" ColumnName="ServiceLife" />
+                <ScalarProperty Name="Warranty" ColumnName="Warranty" />
+                <ScalarProperty Name="IsRM" ColumnName="IsRM" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="ProductRootId" ColumnName="ProductRootId" />
                 <ScalarProperty Name="ProductRevision" ColumnName="ProductRevision" />
@@ -1613,6 +1701,8 @@
           <EntitySetMapping Name="ProductFamily">
             <EntityTypeMapping TypeName="OrBitMOM_KocelModel.ProductFamily">
               <MappingFragment StoreEntitySet="ProductFamily">
+                <ScalarProperty Name="ControlNum" ColumnName="ControlNum" />
+                <ScalarProperty Name="MaxMOItemTaskCount" ColumnName="MaxMOItemTaskCount" />
                 <ScalarProperty Name="ProductFamilyId" ColumnName="ProductFamilyId" />
                 <ScalarProperty Name="ProductFamilyName" ColumnName="ProductFamilyName" />
                 <ScalarProperty Name="ProductFamilyShortName" ColumnName="ProductFamilyShortName" />
@@ -1681,6 +1771,7 @@
           <EntitySetMapping Name="Venture">
             <EntityTypeMapping TypeName="OrBitMOM_KocelModel.Venture">
               <MappingFragment StoreEntitySet="Venture">
+                <ScalarProperty Name="ControlNum" ColumnName="ControlNum" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="VentureId" ColumnName="VentureId" />
                 <ScalarProperty Name="VentureName" ColumnName="VentureName" />
@@ -1813,6 +1904,8 @@
           <EntitySetMapping Name="BanChengPinMO">
             <EntityTypeMapping TypeName="OrBitMOM_KocelModel.BanChengPinMO">
               <MappingFragment StoreEntitySet="BanChengPinMO">
+                <ScalarProperty Name="SOSequence" ColumnName="SOSequence" />
+                <ScalarProperty Name="SAP_Remarks" ColumnName="SAP_Remarks" />
                 <ScalarProperty Name="SendMaterialDate" ColumnName="SendMaterialDate" />
                 <ScalarProperty Name="SAP_CHARG" ColumnName="SAP_CHARG" />
                 <ScalarProperty Name="SAP_VDATU" ColumnName="SAP_VDATU" />
@@ -1888,6 +1981,8 @@
           <EntitySetMapping Name="ChanchengPinMO">
             <EntityTypeMapping TypeName="OrBitMOM_KocelModel.ChanchengPinMO">
               <MappingFragment StoreEntitySet="ChanchengPinMO">
+                <ScalarProperty Name="SOSequence" ColumnName="SOSequence" />
+                <ScalarProperty Name="SAP_Remarks" ColumnName="SAP_Remarks" />
                 <ScalarProperty Name="SendMaterialDate" ColumnName="SendMaterialDate" />
                 <ScalarProperty Name="SAP_CHARG" ColumnName="SAP_CHARG" />
                 <ScalarProperty Name="SAP_VDATU" ColumnName="SAP_VDATU" />
@@ -2063,6 +2158,23 @@
                 <ScalarProperty Name="ProductFamilyId" ColumnName="ProductFamilyId" />
                 <ScalarProperty Name="VentureId" ColumnName="VentureId" />
                 <ScalarProperty Name="VentureProductFamilyId" ColumnName="VentureProductFamilyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MOProductSpecification">
+            <EntityTypeMapping TypeName="OrBitMOM_KocelModel.MOProductSpecification">
+              <MappingFragment StoreEntitySet="MOProductSpecification">
+                <ScalarProperty Name="ERPDate" ColumnName="ERPDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ERPSequence" ColumnName="ERPSequence" />
+                <ScalarProperty Name="ItemSequence" ColumnName="ItemSequence" />
+                <ScalarProperty Name="WorkcenterShortName" ColumnName="WorkcenterShortName" />
+                <ScalarProperty Name="UOMName" ColumnName="UOMName" />
+                <ScalarProperty Name="StandardWorkingTime" ColumnName="StandardWorkingTime" />
+                <ScalarProperty Name="SpecificationId" ColumnName="SpecificationId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="MOId" ColumnName="MOId" />
+                <ScalarProperty Name="MOProductSpecificationId" ColumnName="MOProductSpecificationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

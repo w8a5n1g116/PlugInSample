@@ -502,7 +502,7 @@ namespace ScheduleCore.Model
 
             public static int GetStandardWorkingTimeByProductId_SpecificationId(string ProductId, string SpecificationId)
             {
-                ProductSpecification ps = SchedulePlan.GetEntity().ProductSpecification.Where(p => p.ProductId == ProductId && p.SpecificationId == SpecificationId).FirstOrDefault();
+                MOProductSpecification ps = SchedulePlan.GetEntity().MOProductSpecification.Where(p => p.ProductId == ProductId && p.SpecificationId == SpecificationId).FirstOrDefault();
 
                 if (ps != null && ps.StandardWorkingTime != null)
                     return (int)ps.StandardWorkingTime;

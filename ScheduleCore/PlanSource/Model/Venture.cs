@@ -27,5 +27,6 @@ namespace PlanSource.Model
         public string ERPNo { get; set; }
         public string ERPName { get; set; }
         public Nullable<bool> IsActive { get; set; }
+        public Nullable<long> ControlNum { get; set; }
     }
 }

@@ -43,5 +43,7 @@ namespace PlanSource.Model
         public string WorkFlowStepName { get; set; }
         public string SpecificationID { get; set; }
         public Nullable<System.DateTime> ReleaseDate { get; set; }
+        public string PreviousMOItemTaskId { get; set; }
+        public Nullable<bool> IsArchived { get; set; }
     }
 }

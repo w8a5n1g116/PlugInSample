@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="23c98d6d02554038b62202e01087e0ca" Name="Diagram1" ZoomLevel="82">
+      <Diagram DiagramId="23c98d6d02554038b62202e01087e0ca" Name="Diagram1" ZoomLevel="94">
         <EntityTypeShape EntityType="OrBitMOM_KocelModel.MO" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="OrBitMOM_KocelModel.MOItemTask" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="OrBitMOM_KocelModel.Product" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
@@ -27,6 +27,7 @@
         <EntityTypeShape EntityType="OrBitMOM_KocelModel.Shift" Width="1.5" PointX="9.375" PointY="15.75" />
         <EntityTypeShape EntityType="OrBitMOM_KocelModel.Venture_Shift" Width="1.5" PointX="15.375" PointY="15.75" />
         <EntityTypeShape EntityType="OrBitMOM_KocelModel.VentureProductFamily" Width="1.5" PointX="17.375" PointY="0.75" />
+        <EntityTypeShape EntityType="OrBitMOM_KocelModel.MOProductSpecification" Width="1.5" PointX="17.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -23,5 +23,7 @@ namespace PlanSource.Model
         public Nullable<int> SafeStorageTime { get; set; }
         public string ERPNo { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<int> MaxMOItemTaskCount { get; set; }
+        public Nullable<long> ControlNum { get; set; }
     }
 }

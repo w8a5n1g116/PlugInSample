@@ -82,6 +82,9 @@
       <DependentUpon>PlanModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MoModel.cs" />
+    <Compile Include="Model\MOProductSpecification.cs">
+      <DependentUpon>PlanModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\PlanModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

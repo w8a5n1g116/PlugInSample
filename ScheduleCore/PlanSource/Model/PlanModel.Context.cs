@@ -20,8 +20,8 @@ namespace PlanSource.Model
         {
         }
 
-        public OrBitMOM_KocelEntities1(string a)
-            : base(a)
+        public OrBitMOM_KocelEntities1(string ConnectString)
+            : base(ConnectString)
         {
         }
 
@@ -52,5 +52,6 @@ namespace PlanSource.Model
         public virtual DbSet<Shift> Shift { get; set; }
         public virtual DbSet<Venture_Shift> Venture_Shift { get; set; }
         public virtual DbSet<VentureProductFamily> VentureProductFamily { get; set; }
+        public virtual DbSet<MOProductSpecification> MOProductSpecification { get; set; }
     }
 }

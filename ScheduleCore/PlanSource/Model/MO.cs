@@ -84,5 +84,12 @@ namespace PlanSource.Model
         public Nullable<System.DateTime> SendMaterialDate { get; set; }
         public string SAP_CHARG { get; set; }
         public string SAP_Remarks { get; set; }
+        public string SOSequence { get; set; }
+        public Nullable<System.DateTime> FinishDate { get; set; }
+        public string IfKeyProduct { get; set; }
+        public string TuoQiReason { get; set; }
+        public string MOStation { get; set; }
+        public Nullable<long> ControlNum { get; set; }
+        public Nullable<bool> IsArchived { get; set; }
     }
 }

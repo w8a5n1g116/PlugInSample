@@ -74,5 +74,8 @@ namespace PlanSource.Model
         public string ERPNo { get; set; }
         public byte[] ERPDate { get; set; }
         public string SAP_ZEINR { get; set; }
+        public Nullable<bool> IsRM { get; set; }
+        public Nullable<int> Warranty { get; set; }
+        public Nullable<int> ServiceLife { get; set; }
     }
 }

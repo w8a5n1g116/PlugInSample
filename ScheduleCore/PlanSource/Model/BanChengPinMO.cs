@@ -83,5 +83,7 @@ namespace PlanSource.Model
         public string SAP_VDATU { get; set; }
         public string SAP_CHARG { get; set; }
         public Nullable<System.DateTime> SendMaterialDate { get; set; }
+        public string SAP_Remarks { get; set; }
+        public string SOSequence { get; set; }
     }
 }

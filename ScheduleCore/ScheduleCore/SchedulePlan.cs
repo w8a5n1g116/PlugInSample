@@ -42,11 +42,11 @@ namespace ScheduleCore
         private List<StepModel> stepModelList = new List<StepModel>();
 
         //private List<string> MoIdListLocal = new List<string>();
-        public List<ProductSpecification> psList = new List<ProductSpecification>();
+        public List<MOProductSpecification> psList = new List<MOProductSpecification>();
 
         public void getPSList()
         {
-            psList = orbitEntity.ProductSpecification.ToList();
+            psList = orbitEntity.MOProductSpecification.ToList();
         }
 
         public string FactoryID;
@@ -692,7 +692,7 @@ namespace ScheduleCore
         /// <returns></returns>
         double GetStandardWorkingTimeByProductId_SpecificationId(string ProductId,string SpecificationId)
         {
-            ProductSpecification ps = psList.Where(p => p.ProductId == ProductId && p.SpecificationId == SpecificationId).FirstOrDefault();
+            MOProductSpecification ps = psList.Where(p => p.ProductId == ProductId && p.SpecificationId == SpecificationId).FirstOrDefault();
 
             if (ps != null && ps.StandardWorkingTime != null)
                 return (double)ps.StandardWorkingTime;
@@ -1318,7 +1318,18 @@ namespace ScheduleCore
                 mitList.AddRange(GetStepByMoId(moid));
             }
 
-            List<string> specificationList = mitList.Select(p => p.SpecificationID).Distinct().ToList();
+            List<string> specificationList = new List<string>();
+
+            if (MoidList == null || !MoidList.Any())
+            {
+                specificationList = new List<string>() { "SPE100000267", "SPE10000025K", "SPE10000026A", "SPE10000025M", "SPE10000025N", "SPE10000025U", "SPE10000025V" };
+            }
+            else
+            {
+                specificationList = mitList.Select(p => p.SpecificationID).Distinct().ToList();
+            }
+
+             
 
             List<ReportModel> reportModelList = new List<ReportModel>();
 
@@ -1435,7 +1446,7 @@ namespace ScheduleCore
             {
                 
 
-                List<MOItemTask> moitemtempList = orbitEntity.MOItemTask.Where(p => p.SpecificationID == specificationId && p.PlannedDateTo >= date && p.PlannedDateTo <= endDate).ToList();
+                List<MOItemTask> moitemtempList = orbitEntity.MOItemTask.Where(p => p.SpecificationID == specificationId && p.PlannedDateTo >= date && p.PlannedDateTo <= endDate && p.TaskStatus == "已下达").ToList();
 
                 foreach (var moitem in moitemtempList)
                 {
@@ -1468,7 +1479,7 @@ namespace ScheduleCore
                 realvalue += GetStandardWorkingTimeByProductId_SpecificationId(moitem.ProductId, moitem.SpecificationID);
             }
 
-            return Math.Round(realvalue / 60, 2);
+            return Math.Round(realvalue, 2);
         }
 
         public double GetSpecifacationCap(string specificationId)
